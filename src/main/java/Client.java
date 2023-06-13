@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client implements Runnable {
     private final String host;
@@ -16,18 +17,21 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 5; i++) {
-            try (Socket clientSocket = new Socket(this.host, this.port);
-                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+        Scanner scanner = new Scanner(System.in);
+        try (Socket clientSocket = new Socket(this.host, this.port);
+             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
-                writer.println("Message from client " + i);
-                System.out.println(reader.readLine());
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            System.out.println(reader.readLine());
+            writer.println(scanner.nextLine());
+            System.out.println(reader.readLine());
+            writer.println(scanner.nextLine());
+            System.out.println(reader.readLine());
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }

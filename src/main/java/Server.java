@@ -22,8 +22,17 @@ public class Server implements Runnable {
                      BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
                     System.out.printf("New connection accepted %s port \n", clientSocket.getPort());
-                    final String msg = reader.readLine();
-                    writer.println(String.format("Answer on %s, from the port: %d", msg, clientSocket.getPort()));
+                    writer.println("Write your name");
+                    String name = reader.readLine();
+                    writer.println("Are you child");
+                    String answer = reader.readLine().trim();
+                    if (answer.equals("yes")){
+                        writer.println(String.format("Welcome to the kids area, %s ! Let's play!", name));
+                    }else if (answer.equals("no")){
+                        writer.println(String.format("Welcome to the adult zone, %s! Have a good rest, or a good working day!", name));
+                    } else {
+                        writer.println("Wrong answer. Sorry :(");
+                    }
                 }
             }
         } catch (IOException e) {
